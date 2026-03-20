@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>GABA-VR</title>
+        <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+        <script src="https://unpkg.com/aframe-look-at-component@latest/dist/aframe-look-at-component.min.js"></script>       
+                     
+    </head>
+    <body>
+        
+        <a-scene>
+            <a-sky color="#D3D3D3"></a-sky>
+            <a-box color="gray"
+                    position="0 -0.1 -10"
+                    width="180"
+                    height="0.1"
+                    depth="100">
+            </a-box>
+            <a-cylinder color="blue"
+                        position="0 0 -40">
+            </a-cylinder>
+            <a-cylinder color="blue"
+                        position="-30 0 -40">
+            </a-cylinder>
+            <a-cylinder color="blue"
+                        position="30 0 -40">
+            </a-cylinder>
+            <a-cylinder color="blue"
+                        position="-5 0 -30">
+            </a-cylinder>
+            <a-cylinder color="blue"
+                        position="5 0 -30">
+            </a-cylinder>
+            <a-cylinder color="blue"
+                        position="35 0 -30">
+            </a-cylinder>
+            <a-cylinder color="blue"
+                        position="25 0 -30">
+            </a-cylinder>
+            <a-cylinder color="blue"
+                        position="-35 0 -30">
+            </a-cylinder>
+            <a-cylinder color="blue"
+                        position="-25 0 -30">
+            </a-cylinder>
+            <a-cylinder color="purple"
+                        position="-60 0 -10">
+            </a-cylinder>
+            <a-cylinder color="purple"
+                        position="-60 0 20">
+            </a-cylinder>
+            <a-cylinder color="yellow"
+                        position="60 0 -10">
+            </a-cylinder>
+            <a-cylinder color="yellow"
+                        position="60 0 20">
+            </a-cylinder>
+            <a-assets>
+                <img id="diazepamimage" src="diazepam/valium.jpg">
+                <a-asset-item id="diazepam" src="diazepam/a1b2g2-diazepam.glb"></a-asset-item>
+                <a-asset-item id="diazepam-site" src="diazepam/diazepam-activesite.glb"></a-asset-item>
+                <a-asset-item id="diazepam-structure" src="diazepam/diazepam-structure.glb"></a-asset-item>
+                <a-asset-item id="flumazenil" src="flumazenil/a1b2g2-flumazemil.glb"></a-asset-item>
+                <a-asset-item id="flumazenil-site" src="flumazenil/flumazenil in active site (1).glb"></a-asset-item>
+                <a-asset-item id="flumazenil-structure" src="flumazenil/flumazenil-structure.glb"></a-asset-item>
+            </a-assets>
+            <a-entity 
+            gltf-model="#diazepam"
+            position="1 15 -40"
+            scale="0.2 0.2 0.2"
+            rotation="170 0 50">
+            </a-entity>
+            <a-entity 
+            gltf-model="#diazepam-site"
+            position="5 2.365 -31.8"
+            scale="7 7 7"
+            rotation="0 0 0">
+            </a-entity>
+            <a-entity 
+            gltf-model="#diazepam-structure"
+            position="-5 2 -31"
+            scale="4 4 4"
+            rotation="190 180 30">
+            </a-entity>
+            <a-entity 
+            gltf-model="#flumazenil"
+            position="30 15 -41.7"
+            scale="0.2 0.2 0.2"
+            rotation="24.1 -59.2 -25">
+            </a-entity>
+            <a-entity 
+            gltf-model="#flumazenil-site"
+            position="35 2 -31.5"
+            scale="7 7 7"
+            rotation="0 0 0">
+            </a-entity>
+            <a-entity 
+            gltf-model="#flumazenil-structure"
+            position="25 2 -31"
+            scale="4 4 4"
+            rotation="0 0 0">
+            </a-entity>
+           
+            <a-entity position="0.7 7.5 -34.1" rotation="-90 12 0" animation="property: position; to: 1 7.5 -32; dir: alternate; loop: true; dur: 800">
+
+            <a-cylinder height="1" radius="0.03" color="red" position="0 0.5 0"></a-cylinder>
+            <a-cone radius-bottom="0.08" height="0.2" color="red" position="0 1.1 0"></a-cone>
+            
+            </a-entity>
+            
+            
+        </a-scene>
+    </body>
+</html>
