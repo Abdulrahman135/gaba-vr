@@ -25,13 +25,26 @@
         
         <a-scene>
             <a-text value="Click the screen to lock mouse" position="0 2 -2" align="center" look-at="[camera]" color="black"></a-text>
+
+            <a-entity 
+                laser-controls="hand: right"
+                raycaster="objects: .clickable"
+                line="color: red">
+            </a-entity>
+
+            <a-entity 
+                laser-controls="hand: left"
+                raycaster="objects: .clickable"
+                line="color: blue">
+            </a-entity>
+
             <a-entity camera position="0 1.6 0"
-            look-controls="pointerLockEnabled: true" 
-            wasd-controls>
-            <a-cursor raycaster="objects: .clickable"
-                        color="black"
-                        fuse="false">
-            </a-cursor>
+                look-controls="pointerLockEnabled: true" 
+                wasd-controls>
+                <a-cursor raycaster="objects: .clickable"
+                            color="black"
+                            fuse="false">
+                </a-cursor>
             </a-entity>
             <a-box 
                 id="myObject"
@@ -185,165 +198,165 @@
                 <a-asset-item id="GABA-structure" src="GABA\GABA-structure.glb"></a-asset-item>
             </a-assets>
             <a-entity 
-            gltf-model="#diazepam"
-            position="1 15.5 -40"
-            scale="0.2 0.2 0.2"
-            rotation="170 0 50">
+                gltf-model="#diazepam"
+                position="1 15.5 -40"
+                scale="0.2 0.2 0.2"
+                rotation="170 0 50">
             </a-entity>
             <a-entity 
-            gltf-model="#diazepam-site"
-            position="5 3.5 -30"
-            scale=".25 .25 .25"
-            rotation="0 0 0">
+                gltf-model="#diazepam-site"
+                position="5 3.5 -30"
+                scale=".25 .25 .25"
+                rotation="0 0 0">
             </a-entity>
             <a-entity 
-            gltf-model="#diazepam-structure"
-            position="-5 2 -31"
-            scale=".25 .25 .25"
-            rotation="190 180 30">
+                gltf-model="#diazepam-structure"
+                position="-5 2 -31"
+                scale=".25 .25 .25"
+                rotation="190 180 30">
             </a-entity>
             <a-entity 
-            gltf-model="#flumazenil"
-            position="30.5 15 -42"
-            scale="0.2 0.2 0.2"
-            rotation="24.1 -59.2 -25">
+                gltf-model="#flumazenil"
+                position="30.5 15 -42"
+                scale="0.2 0.2 0.2"
+                rotation="24.1 -59.2 -25">
             </a-entity>
             <a-entity 
-            gltf-model="#flumazenil-site"
-            position="35 3.5 -29.5"
-            scale=".25 .25 .25"
-            rotation="0 0 0">
+                gltf-model="#flumazenil-site"
+                position="35 3.5 -29.5"
+                scale=".25 .25 .25"
+                rotation="0 0 0">
             </a-entity>
             <a-entity 
-            gltf-model="#flumazenil-structure"
-            position="25 2 -30"
-            scale=".25 .25 .25"
-            rotation="0 0 0">
+                gltf-model="#flumazenil-structure"
+                position="25 2 -30"
+                scale=".25 .25 .25"
+                rotation="0 0 0">
             </a-entity>
             <a-entity 
-            gltf-model="#zolpidem"
-            position="-31 15 -41.7"
-            scale="0.2 0.2 0.2"
-            rotation="165 210 -30">
+                gltf-model="#zolpidem"
+                position="-31 15 -41.7"
+                scale="0.2 0.2 0.2"
+                rotation="165 210 -30">
             </a-entity>
             <a-entity 
-            gltf-model="#zolpidem-site"
-            position="-25 3.5 -30"
-            scale="0.25 0.25 0.25a"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                gltf-model="#zolpidem-site"
+                position="-25 3.5 -30"
+                scale="0.25 0.25 0.25a"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
             <a-entity 
-            gltf-model="#zolpidem-structure"
-            position="-35 2 -29.75"
-            scale="4 4 4"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                gltf-model="#zolpidem-structure"
+                position="-35 2 -29.75"
+                scale="4 4 4"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
            
             <a-entity 
-            gltf-model="#picrotoxin"
-            position="-70 15 -10"
-            scale="0.2 0.2 0.2"
-            rotation="55 90 0">
+                gltf-model="#picrotoxin"
+                position="-70 15 -10"
+                scale="0.2 0.2 0.2"
+                rotation="55 90 0">
             </a-entity>
             <a-entity 
-            gltf-model="#picrotoxin-site"
-            position="-60 3.5 -15"
-            scale="0.25 0.25 0.25"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                gltf-model="#picrotoxin-site"
+                position="-60 3.5 -15"
+                scale="0.25 0.25 0.25"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
             <a-entity 
-            gltf-model="#picrotoxin-structure"
-            position="-60 2 -5"
-            scale="0.25 0.25 0.25"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
-            </a-entity>
-
-            <a-entity 
-            gltf-model="#loreclezole"
-            position="-70 13 20"
-            scale="0.2 0.2 0.2"
-            rotation="90 0 -0">
-            </a-entity>
-            <a-entity 
-            gltf-model="#loreclezole-site"
-            position="-60 3.5 15"
-            scale="0.25 0.25 0.25"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
-            </a-entity>
-            <a-entity 
-            gltf-model="#loreclezole-structure"
-            position="-60 2 25"
-            scale="0.25 0.25 0.25"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                gltf-model="#picrotoxin-structure"
+                position="-60 2 -5"
+                scale="0.25 0.25 0.25"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
 
             <a-entity 
-            gltf-model="#alprazolam"
-            position="71 14 -11"
-            scale="0.2 0.2 0.2"
-            rotation="-85 225 -25">
+                gltf-model="#loreclezole"
+                position="-70 13 20"
+                scale="0.2 0.2 0.2"
+                rotation="90 0 -0">
             </a-entity>
             <a-entity 
-            gltf-model="#alprazolam-site"
-            position="60 3.5 -5"
-            scale="0.25 0.25 0.25"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                gltf-model="#loreclezole-site"
+                position="-60 3.5 15"
+                scale="0.25 0.25 0.25"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
             <a-entity 
-            gltf-model="#alprazolam-structure"
-            position="60 2 -15"
-            scale="0.25 0.25 0.25"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
-            </a-entity>
-
-            <a-entity 
-            gltf-model="#etomidate"
-            position="70 14 20"
-            scale="0.2 0.2 0.2"
-            rotation="90 0 0">
-            </a-entity>
-            <a-entity 
-            gltf-model="#etomidate-site"
-            position="60 3.5 25"
-            scale="0.25 0.25 0.25"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
-            </a-entity>
-            <a-entity 
-            gltf-model="#etomidate-structure"
-            position="60 2 15"
-            scale="0.25 0.25 0.25"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                gltf-model="#loreclezole-structure"
+                position="-60 2 25"
+                scale="0.25 0.25 0.25"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
 
             <a-entity 
-            gltf-model="#GABA"
-            position="30 15 30"
-            scale="0.2 0.2 0.2"
-            rotation="165 210 -30">
+                gltf-model="#alprazolam"
+                position="71 14 -11"
+                scale="0.2 0.2 0.2"
+                rotation="-85 225 -25">
             </a-entity>
             <a-entity 
-            gltf-model="#GABA-site"
-            position="35 3.5 30"
-            scale="0.25 0.25 0.25"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                gltf-model="#alprazolam-site"
+                position="60 3.5 -5"
+                scale="0.25 0.25 0.25"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
             <a-entity 
-            gltf-model="#GABA-structure"
-            position="25 2 30"
-            scale="0.25 0.25 0.25"
-            rotation="0 0 0"
-            animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                gltf-model="#alprazolam-structure"
+                position="60 2 -15"
+                scale="0.25 0.25 0.25"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+            </a-entity>
+
+            <a-entity 
+                gltf-model="#etomidate"
+                position="70 14 20"
+                scale="0.2 0.2 0.2"
+                rotation="90 0 0">
+            </a-entity>
+            <a-entity 
+                gltf-model="#etomidate-site"
+                position="60 3.5 25"
+                scale="0.25 0.25 0.25"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+            </a-entity>
+            <a-entity 
+                gltf-model="#etomidate-structure"
+                position="60 2 15"
+                scale="0.25 0.25 0.25"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+            </a-entity>
+
+            <a-entity 
+                gltf-model="#GABA"
+                position="30 15 30"
+                scale="0.2 0.2 0.2"
+                rotation="165 210 -30">
+            </a-entity>
+            <a-entity 
+                gltf-model="#GABA-site"
+                position="35 3.5 30"
+                scale="0.25 0.25 0.25"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+            </a-entity>
+            <a-entity 
+                gltf-model="#GABA-structure"
+                position="25 2 30"
+                scale="0.25 0.25 0.25"
+                rotation="0 0 0"
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
 
             
