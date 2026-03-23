@@ -24,8 +24,42 @@
     <body>
         
         <a-scene>
-            <a-text value="Click the screen to lock mouse" position="0 2 -2" align="center" look-at="[camera]" color="black"></a-text>
+            <a-assets>
+                <img id="diazepamimage" src="diazepam/valium.jpg">
+                <a-asset-item id="diazepam" src="diazepam/a1b2g2-diazepam.glb"></a-asset-item>
+                <a-asset-item id="diazepam-site" src="diazepam/diazepam-site.glb"></a-asset-item>
+                <a-asset-item id="diazepam-structure" src="diazepam/diazepam-structure.glb"></a-asset-item>
 
+                <a-asset-item id="flumazenil" src="flumazenil/a1b2g2-flumazemil.glb"></a-asset-item>
+                <a-asset-item id="flumazenil-site" src="flumazenil/flumazenil-site.glb"></a-asset-item>
+                <a-asset-item id="flumazenil-structure" src="flumazenil/flumazenil-structure.glb"></a-asset-item>
+
+                <a-asset-item id="zolpidem" src="zolpidem\a1b2g2-zolpidem.glb"></a-asset-item>
+                <a-asset-item id="zolpidem-structure" src="zolpidem/zolpidem-structure.glb"></a-asset-item>
+                <a-asset-item id="zolpidem-site" src="zolpidem/zolpidem-site2.glb"></a-asset-item>
+
+                <a-asset-item id="picrotoxin" src="picrotoxin\picrotoxin.glb"></a-asset-item>
+                <a-asset-item id="picrotoxin-site" src="picrotoxin\picrotoxin-site.glb"></a-asset-item>
+                <a-asset-item id="picrotoxin-structure" src="picrotoxin\picrotoxin-structure.glb"></a-asset-item>
+
+                <a-asset-item id="loreclezole" src="loreclezole\loreclezole.glb"></a-asset-item>
+                <a-asset-item id="loreclezole-site" src="loreclezole\loreclezole-site.glb"></a-asset-item>
+                <a-asset-item id="loreclezole-structure" src="loreclezole\loreclezole-structure.glb"></a-asset-item>
+
+                <a-asset-item id="alprazolam" src="alprazolam\alprazolam.glb"></a-asset-item>
+                <a-asset-item id="alprazolam-site" src="alprazolam\alprazolam-site.glb"></a-asset-item>
+                <a-asset-item id="alprazolam-structure" src="alprazolam\alprazolam-structure.glb"></a-asset-item>
+
+                <a-asset-item id="etomidate" src="etomidate\etomidate.glb"></a-asset-item>
+                <a-asset-item id="etomidate-site" src="etomidate\etomidate-site.glb"></a-asset-item>
+                <a-asset-item id="etomidate-structure" src="etomidate\etomidate-structure.glb"></a-asset-item>
+
+                <a-asset-item id="GABA" src=""></a-asset-item>
+                <a-asset-item id="GABA-site" src="GABA\GABA-site.glb"></a-asset-item>
+                <a-asset-item id="GABA-structure" src="GABA\GABA-structure.glb"></a-asset-item>
+                <img id="floor" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
+                <img id="normal-floor" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+            </a-assets>
             <a-entity 
                 laser-controls="hand: right"
                 raycaster="objects: .clickable"
@@ -73,182 +107,154 @@
 
             </a-plane>
             <a-sky color="#D3D3D3"></a-sky>
-            <a-box color="gray"
-                    position="0 -0.1 -10"
-                    width="180"
-                    height="0.1"
-                    depth="100">
-            </a-box>
+            <a-plane 
+                    color="white"
+                    src="#floor"
+                    repeat="30 30"
+                    normal-map="#normal-floor"
+                    normal-texture-repeat="30 30"
+                    position="0 0 0"
+                    width="200"
+                    height="200"
+                    rotation="-90 0 0">
+            </a-plane>
             <a-cylinder color="blue"
-                        position="0 0 -40"
-                        radius="5">
+                        position="0 0 -70"
+                        radius="10">
             </a-cylinder>
             <a-cylinder color="blue"
-                        position="-30 0 -40"
-                        radius="5">
+                        position="-50 0 -70"
+                        radius="10">
             </a-cylinder>
             <a-cylinder color="blue"
-                        position="30 0 -40"
-                        radius="5">
+                        position="50 0 -70"
+                        radius="10">
             </a-cylinder>
             <a-cylinder color="blue"
-                        position="-5 0 -30"
-                        radius="2.5">
+                        position="-10 0 -50"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="blue"
-                        position="5 0 -30"
-                        radius="2.5">
+                        position="10 0 -50"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="blue"
-                        position="35 0 -30"
-                        radius="2.5">
+                        position="60 0 -50"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="blue"
-                        position="25 0 -30"
-                        radius="2.5">
+                        position="40 0 -50"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="blue"
-                        position="-35 0 -30"
-                        radius="2.5">
+                        position="-40 0 -50"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="blue"
-                        position="-25 0 -30"
-                        radius="2.5">
+                        position="-60 0 -50"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="purple"
-                        position="-70 0 -10"
-                        radius="5">
+                        position="-80 0 -10"
+                        radius="10">
             </a-cylinder>
             <a-cylinder color="purple"
-                        position="-70 0 20"
-                        radius="5">
+                        position="-80 0 40"
+                        radius="10">
             </a-cylinder>
             <a-cylinder color="purple"
-                        position="-60 0 -5"
-                        radius="2.5">
+                        position="-60 0 -20"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="purple"
-                        position="-60 0 -15"
-                        radius="2.5">
+                        position="-60 0 0"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="purple"
-                        position="-60 0 15"
-                        radius="2.5">
+                        position="-60 0 30"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="purple"
-                        position="-60 0 25"
-                        radius="2.5">
+                        position="-60 0 50"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="yellow"
-                        position="70 0 -10"
-                        radius="5">
+                        position="80 0 -10"
+                        radius="10">
             </a-cylinder>
             <a-cylinder color="yellow"
-                        position="70 0 20"
-                        radius="5">
+                        position="80 0 40"
+                        radius="10">
             </a-cylinder>
             <a-cylinder color="yellow"
-                        position="60 0 -5"
-                        radius="2.5">
+                        position="60 0 -20"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="yellow"
-                        position="60 0 15"
-                        radius="2.5">
+                        position="60 0 0"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="yellow"
-                        position="60 0 -15"
-                        radius="2.5">
+                        position="60 0 30"
+                        radius="3">
             </a-cylinder>
             <a-cylinder color="yellow"
-                        position="60 0 25"
-                        radius="2.5">
+                        position="60 0 50"
+                        radius="3">
             </a-cylinder>
-            <a-assets>
-                <img id="diazepamimage" src="diazepam/valium.jpg">
-                <a-asset-item id="diazepam" src="diazepam/a1b2g2-diazepam.glb"></a-asset-item>
-                <a-asset-item id="diazepam-site" src="diazepam/diazepam-site.glb"></a-asset-item>
-                <a-asset-item id="diazepam-structure" src="diazepam/diazepam-structure.glb"></a-asset-item>
-
-                <a-asset-item id="flumazenil" src="flumazenil/a1b2g2-flumazemil.glb"></a-asset-item>
-                <a-asset-item id="flumazenil-site" src="flumazenil/flumazenil-site.glb"></a-asset-item>
-                <a-asset-item id="flumazenil-structure" src="flumazenil/flumazenil-structure.glb"></a-asset-item>
-
-                <a-asset-item id="zolpidem" src="zolpidem\a1b2g2-zolpidem.glb"></a-asset-item>
-                <a-asset-item id="zolpidem-structure" src="zolpidem/zolpidem-structure.glb"></a-asset-item>
-                <a-asset-item id="zolpidem-site" src="zolpidem/zolpidem-site2.glb"></a-asset-item>
-
-                <a-asset-item id="picrotoxin" src="picrotoxin\picrotoxin.glb"></a-asset-item>
-                <a-asset-item id="picrotoxin-site" src="picrotoxin\picrotoxin-site.glb"></a-asset-item>
-                <a-asset-item id="picrotoxin-structure" src="picrotoxin\picrotoxin-structure.glb"></a-asset-item>
-
-                <a-asset-item id="loreclezole" src="loreclezole\loreclezole.glb"></a-asset-item>
-                <a-asset-item id="loreclezole-site" src="loreclezole\loreclezole-site.glb"></a-asset-item>
-                <a-asset-item id="loreclezole-structure" src="loreclezole\loreclezole-structure.glb"></a-asset-item>
-
-                <a-asset-item id="alprazolam" src="alprazolam\alprazolam.glb"></a-asset-item>
-                <a-asset-item id="alprazolam-site" src="alprazolam\alprazolam-site.glb"></a-asset-item>
-                <a-asset-item id="alprazolam-structure" src="alprazolam\alprazolam-structure.glb"></a-asset-item>
-
-                <a-asset-item id="etomidate" src="etomidate\etomidate.glb"></a-asset-item>
-                <a-asset-item id="etomidate-site" src="etomidate\etomidate-site.glb"></a-asset-item>
-                <a-asset-item id="etomidate-structure" src="etomidate\etomidate-structure.glb"></a-asset-item>
-
-                <a-asset-item id="GABA" src=""></a-asset-item>
-                <a-asset-item id="GABA-site" src="GABA\GABA-site.glb"></a-asset-item>
-                <a-asset-item id="GABA-structure" src="GABA\GABA-structure.glb"></a-asset-item>
-            </a-assets>
+            
             <a-entity 
                 gltf-model="#diazepam"
-                position="1 15.5 -40"
+                position="1 15.5 -70"
                 scale="0.2 0.2 0.2"
                 rotation="170 0 50">
             </a-entity>
             <a-entity 
                 gltf-model="#diazepam-site"
-                position="5 3.5 -30"
+                position="10 3.5 -50"
                 scale=".25 .25 .25"
                 rotation="0 0 0">
             </a-entity>
             <a-entity 
                 gltf-model="#diazepam-structure"
-                position="-5 2 -31"
+                position="-10 2 -51"
                 scale=".25 .25 .25"
                 rotation="190 180 30">
             </a-entity>
             <a-entity 
                 gltf-model="#flumazenil"
-                position="30.5 15 -42"
+                position="50.5 15 -72"
                 scale="0.2 0.2 0.2"
                 rotation="24.1 -59.2 -25">
             </a-entity>
             <a-entity 
                 gltf-model="#flumazenil-site"
-                position="35 3.5 -29.5"
+                position="60 3.5 -49.5"
                 scale=".25 .25 .25"
                 rotation="0 0 0">
             </a-entity>
             <a-entity 
                 gltf-model="#flumazenil-structure"
-                position="25 2 -30"
+                position="40 2 -50"
                 scale=".25 .25 .25"
                 rotation="0 0 0">
             </a-entity>
             <a-entity 
                 gltf-model="#zolpidem"
-                position="-31 15 -41.7"
+                position="-51 15 -72"
                 scale="0.2 0.2 0.2"
                 rotation="165 210 -30">
             </a-entity>
             <a-entity 
                 gltf-model="#zolpidem-site"
-                position="-25 3.5 -30"
+                position="-40 3.5 -50"
                 scale="0.25 0.25 0.25a"
                 rotation="0 0 0"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
             <a-entity 
                 gltf-model="#zolpidem-structure"
-                position="-35 2 -29.75"
+                position="-60 2 -49.75"
                 scale="4 4 4"
                 rotation="0 0 0"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
@@ -256,20 +262,20 @@
            
             <a-entity 
                 gltf-model="#picrotoxin"
-                position="-70 15 -10"
+                position="-80 15 -10"
                 scale="0.2 0.2 0.2"
                 rotation="55 90 0">
             </a-entity>
             <a-entity 
                 gltf-model="#picrotoxin-site"
-                position="-60 3.5 -15"
+                position="-60 3.5 -20"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
             <a-entity 
                 gltf-model="#picrotoxin-structure"
-                position="-60 2 -5"
+                position="-60 2 0"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
@@ -277,20 +283,20 @@
 
             <a-entity 
                 gltf-model="#loreclezole"
-                position="-70 13 20"
+                position="-80 13 40"
                 scale="0.2 0.2 0.2"
                 rotation="90 0 -0">
             </a-entity>
             <a-entity 
                 gltf-model="#loreclezole-site"
-                position="-60 3.5 15"
+                position="-60 3.5 30"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
             <a-entity 
                 gltf-model="#loreclezole-structure"
-                position="-60 2 25"
+                position="-60 2 50"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
@@ -298,41 +304,41 @@
 
             <a-entity 
                 gltf-model="#alprazolam"
-                position="71 14 -11"
+                position="81 14 -11"
                 scale="0.2 0.2 0.2"
                 rotation="-85 225 -25">
             </a-entity>
             <a-entity 
                 gltf-model="#alprazolam-site"
-                position="60 3.5 -5"
+                position="60 3.5 0"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
             <a-entity 
                 gltf-model="#alprazolam-structure"
-                position="60 2 -15"
+                position="60 2 -20"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
-                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                animation="property: rotation; to: 0 360 0; loop: true; dur: 2000; easing: linear">
             </a-entity>
 
             <a-entity 
                 gltf-model="#etomidate"
-                position="70 14 20"
+                position="80 14 40"
                 scale="0.2 0.2 0.2"
                 rotation="90 0 0">
             </a-entity>
             <a-entity 
                 gltf-model="#etomidate-site"
-                position="60 3.5 25"
+                position="60 3.5 50"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
             <a-entity 
                 gltf-model="#etomidate-structure"
-                position="60 2 15"
+                position="60 2 30"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
