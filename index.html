@@ -19,7 +19,8 @@
             panel.setAttribute('visible', true);
             panel.emit('showPanel');
         });
-        </script>        
+        </script>     
+          
     </head>
     <body>
         
@@ -57,8 +58,21 @@
                 <a-asset-item id="GABA" src=""></a-asset-item>
                 <a-asset-item id="GABA-site" src="GABA\GABA-site.glb"></a-asset-item>
                 <a-asset-item id="GABA-structure" src="GABA\GABA-structure.glb"></a-asset-item>
-                <img id="floor" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
+
+                <img id="floor-texture" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
                 <img id="normal-floor" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+
+                <img id="bricks" src="textures\brickwall1\BricksLongThinRunningExtruded001_COL_2K_METALNESS.png">
+                <img id="normal-bricks" src="textures\brickwall1\BricksLongThinRunningExtruded001_NRM_2K_METALNESS.png">
+
+                <img id="cement" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
+                <img id="normal-cement" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+
+                <img id="metal" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
+                <img id="normal-metal" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+
+                <img id="tiles" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
+                <img id="normal-tiles" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
             </a-assets>
             <a-entity 
                 laser-controls="hand: right"
@@ -108,18 +122,29 @@
             </a-plane>
             <a-sky color="#D3D3D3"></a-sky>
             <a-plane 
-                    color="#e0ebeb"
-                    src="#floor"
-                    repeat="22 22"
-                    normal-map="#normal-floor"
-                    normal-texture-repeat="22 22"
-                    normal-scale="2.75 2.75"
-                    roughness="0.6"
+                    material="
+                        src: #floor-texture;
+                        normal-map: #normal-floor;
+                        roughness:0.45;
+                        repeat: 22 22;
+                        normal-texture-repeat:22 22;
+                    "
                     position="0 0 0"
                     width="200"
                     height="200"
                     rotation="-90 0 0">
             </a-plane>
+            <a-entity 
+                geometry="primitive: box; width: 202; height: 2; depth: 1"
+                position="0 1 100"
+                material="
+                    src:#bricks;
+                    normal-map:#normal-bricks;
+                    roughness:0.7;
+                    repeat:30 0.2;
+                    normal-texture-repeat:30 0.2;">
+            </a-entity>
+
             <a-cylinder color="blue"
                         position="0 0 -70"
                         radius="10">
@@ -204,20 +229,38 @@
                         position="60 0 50"
                         radius="3">
             </a-cylinder>
-            
-            <a-entity 
-                gltf-model="#diazepam"
+            <a-box 
                 position="1 15.5 -70"
-                scale="0.2 0.2 0.2"
-                rotation="170 0 50">
-            </a-entity>
+                class="clickable rotatable"
+                width="12"
+                depth="12"
+                height="28"
+                opacity="0">
+                <a-entity 
+                    gltf-model="#diazepam"
+                    position="0 0 0"
+                    scale="0.2 0.2 0.2"
+                    rotation="170 0 50">
+                </a-entity>
+
+                <a-entity position="-9 1.25 4.5" rotation="-90 -57 0" animation="property: position; to: -7.25 1.25 3.5; dir: alternate; loop: true; dur: 800">
+
+                    <a-cylinder height="2" radius="0.05" color="red" position="0 0.5 0"></a-cylinder>
+                    <a-cone radius-bottom="0.15" height="0.5" color="red" position="0 1.5 0"></a-cone>
+                
+                </a-entity>
+             
+            </a-box>
             <a-entity 
+                class="rotatable clickable"
                 gltf-model="#diazepam-site"
                 position="10 3.5 -50"
                 scale=".25 .25 .25"
-                rotation="0 0 0">
+                rotation="0 0 0"
+                >
             </a-entity>
             <a-entity 
+                class="rotatable clickable"
                 gltf-model="#diazepam-structure"
                 position="-10 2 -51"
                 scale=".25 .25 .25"
@@ -369,14 +412,42 @@
 
             
 
-            <a-entity position="0.7 7.5 -34.1" rotation="-90 12 0" animation="property: position; to: 1 7.5 -32; dir: alternate; loop: true; dur: 800">
-
-            <a-cylinder height="1" radius="0.03" color="red" position="0 0.5 0"></a-cylinder>
-            <a-cone radius-bottom="0.08" height="0.2" color="red" position="0 1.1 0"></a-cone>
             
-            </a-entity>
             
             
         </a-scene>
+        <script>
+            let isDragging = false;
+            let activeObject = null;
+
+            // Get all rotatable objects
+            const objects = document.querySelectorAll('.rotatable');
+
+            // When clicking an object → set it as active
+            objects.forEach(obj => {
+            obj.addEventListener('mousedown', () => {
+                isDragging = true;
+                activeObject = obj;
+            });
+            });
+
+            // Stop dragging
+            window.addEventListener('mouseup', () => {
+            isDragging = false;
+            activeObject = null;
+            });
+
+            // Rotate only the active object
+            window.addEventListener('mousemove', (e) => {
+            if (!isDragging || !activeObject) return;
+
+            let rotation = activeObject.getAttribute('rotation');
+
+            rotation.y += e.movementX * 0.5;
+            
+
+            activeObject.setAttribute('rotation', rotation);
+            });
+        </script> 
     </body>
 </html>
