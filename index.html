@@ -58,6 +58,8 @@
                 <a-asset-item id="GABA" src=""></a-asset-item>
                 <a-asset-item id="GABA-site" src="GABA\GABA-site.glb"></a-asset-item>
                 <a-asset-item id="GABA-structure" src="GABA\GABA-structure.glb"></a-asset-item>
+                
+                <a-asset-item id="display" src="3dassets\display.glb"></a-asset-item>
 
                 <img id="floor-texture" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
                 <img id="normal-floor" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
@@ -73,6 +75,7 @@
 
                 <img id="tiles" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
                 <img id="normal-tiles" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+            
             </a-assets>
             <a-entity 
                 laser-controls="hand: right"
@@ -260,6 +263,12 @@
                 >
             </a-entity>
             <a-entity 
+                gltf-model="#display"
+                position="20 -0.7 -51"
+                scale="1 1 1"
+                rotation="0 -50 0">
+            </a-entity>
+            <a-entity 
                 class="rotatable clickable"
                 gltf-model="#diazepam-structure"
                 position="-10 2 -51"
@@ -267,44 +276,107 @@
                 rotation="190 180 30">
             </a-entity>
             <a-entity 
-                gltf-model="#flumazenil"
-                position="50.5 15 -72"
-                scale="0.2 0.2 0.2"
-                rotation="24.1 -59.2 -25">
+                gltf-model="#display"
+                position="-17 -.7 -51"
+                scale="1 1 1"
+                rotation="0 50 0">
             </a-entity>
+
+            <a-box 
+                position="50.5 15 -72"
+                class="clickable rotatable"
+                width="12"
+                depth="12"
+                height="28"
+                opacity="0">
+                <a-entity 
+                    gltf-model="#flumazenil"
+                    position="0 0 0"
+                    scale="0.2 0.2 0.2"
+                    rotation="24.1 -59.2 -25">
+                </a-entity>
+
+                <a-entity position="-8 1.25 4.5" rotation="-90 -57 0" animation="property: position; to: -6.25 1.25 3.5; dir: alternate; loop: true; dur: 800">
+
+                    <a-cylinder height="2" radius="0.05" color="red" position="0 0.5 0"></a-cylinder>
+                    <a-cone radius-bottom="0.15" height="0.5" color="red" position="0 1.5 0"></a-cone>
+                
+                </a-entity>
+            </a-box>
             <a-entity 
                 gltf-model="#flumazenil-site"
+                class="rotatable clickable"
                 position="60 3.5 -49.5"
                 scale=".25 .25 .25"
                 rotation="0 0 0">
             </a-entity>
             <a-entity 
                 gltf-model="#flumazenil-structure"
+                class="rotatable clickable"
                 position="40 2 -50"
                 scale=".25 .25 .25"
                 rotation="0 0 0">
             </a-entity>
             <a-entity 
-                gltf-model="#zolpidem"
-                position="-51 15 -72"
-                scale="0.2 0.2 0.2"
-                rotation="165 210 -30">
+                gltf-model="#display"
+                position="70 -0.70 -51"
+                scale="1 1 1"
+                rotation="0 -50 0">
             </a-entity>
             <a-entity 
+                gltf-model="#display"
+                position="30 -0.70 -51"
+                scale="1 1 1"
+                rotation="0 50 0">
+            </a-entity>
+            <a-box 
+                position="-51 15 -72"
+                class="clickable rotatable"
+                width="12"
+                depth="12"
+                height="28"
+                opacity="0">
+                <a-entity 
+                    gltf-model="#zolpidem"
+                    position="0 0 0"
+                    scale="0.2 0.2 0.2"
+                    rotation="165 210 -30">
+                </a-entity>
+
+                <a-entity position="-9 1.25 4.5" rotation="-90 -57 0" animation="property: position; to: -7.25 1.25 3.5; dir: alternate; loop: true; dur: 800">
+
+                    <a-cylinder height="2" radius="0.05" color="red" position="0 0.5 0"></a-cylinder>
+                    <a-cone radius-bottom="0.15" height="0.5" color="red" position="0 1.5 0"></a-cone>
+                
+                </a-entity>
+            </a-box>
+
+            <a-entity 
                 gltf-model="#zolpidem-site"
+                class="rotatable clickable"
                 position="-40 3.5 -50"
                 scale="0.25 0.25 0.25a"
-                rotation="0 0 0"
-                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                rotation="0 0 0">
             </a-entity>
             <a-entity 
                 gltf-model="#zolpidem-structure"
+                class="rotatable clickable"
                 position="-60 2 -49.75"
                 scale="4 4 4"
-                rotation="0 0 0"
-                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                rotation="0 0 0">
             </a-entity>
-           
+            <a-entity 
+                gltf-model="#display"
+                position="-30 -0.7 -50"
+                scale="1 1 1"
+                rotation="0 -50 0">
+            </a-entity>
+            <a-entity 
+                gltf-model="#display"
+                position="-67 -0.7 -51"
+                scale="1 1 1"
+                rotation="0 50 0">
+            </a-entity>
             <a-entity 
                 gltf-model="#picrotoxin"
                 position="-80 15 -10"
@@ -325,82 +397,175 @@
                 rotation="0 0 0"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
             </a-entity>
-
             <a-entity 
-                gltf-model="#loreclezole"
-                position="-80 13 40"
-                scale="0.2 0.2 0.2"
-                rotation="90 0 -0">
+                gltf-model="#display"
+                position="-65 -0.7 -27"
+                scale="1 1 1"
+                rotation="0 50 0">
             </a-entity>
             <a-entity 
+                gltf-model="#display"
+                position="-65 -0.7 10"
+                scale="1 1 1"
+                rotation="0 140 0">
+            </a-entity>
+            <a-box 
+                position="-80 13 40"
+                class="clickable rotatable"
+                width="12"
+                depth="12"
+                height="28"
+                opacity="0">
+                <a-entity 
+                    gltf-model="#loreclezole"
+                    position="0 0 0"
+                    scale="0.2 0.2 0.2"
+                    rotation="90 0 -0">
+                </a-entity>
+
+                <a-entity position="-9 1.25 4.5" rotation="-90 -57 0" animation="property: position; to: -7.25 1.25 3.5; dir: alternate; loop: true; dur: 800">
+
+                    <a-cylinder height="2" radius="0.05" color="red" position="0 0.5 0"></a-cylinder>
+                    <a-cone radius-bottom="0.15" height="0.5" color="red" position="0 1.5 0"></a-cone>
+                
+                </a-entity>
+            </a-box>
+            <a-entity 
                 gltf-model="#loreclezole-site"
+                class="rotatable clickable"
                 position="-60 3.5 30"
                 scale="0.25 0.25 0.25"
-                rotation="0 0 0"
-                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                rotation="0 0 0">
             </a-entity>
             <a-entity 
                 gltf-model="#loreclezole-structure"
                 position="-60 2 50"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
-                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                class="rotatable clickable">
             </a-entity>
-
             <a-entity 
-                gltf-model="#alprazolam"
-                position="81 14 -11"
-                scale="0.2 0.2 0.2"
-                rotation="-85 225 -25">
+                gltf-model="#display"
+                position="-65 -0.7 60"
+                scale="1 1 1"
+                rotation="0 140 0">
             </a-entity>
+            <a-entity 
+                gltf-model="#display"
+                position="-65 -0.7 20"
+                scale="1 1 1"
+                rotation="0 50 0">
+            </a-entity>
+            
+            <a-box 
+                position="81 14 -11"
+                class="clickable rotatable"
+                width="12"
+                depth="12"
+                height="28"
+                opacity="0">
+                <a-entity 
+                    gltf-model="#alprazolam"
+                    position="0 0 0"
+                    scale="0.2 0.2 0.2"
+                    rotation="-85 225 -25">
+                </a-entity>
+
+                <a-entity position="-9 1.25 4.5" rotation="-90 -57 0" animation="property: position; to: -7.25 1.25 3.5; dir: alternate; loop: true; dur: 800">
+
+                    <a-cylinder height="2" radius="0.05" color="red" position="0 0.5 0"></a-cylinder>
+                    <a-cone radius-bottom="0.15" height="0.5" color="red" position="0 1.5 0"></a-cone>
+                
+                </a-entity>
+            </a-box>
+            
             <a-entity 
                 gltf-model="#alprazolam-site"
                 position="60 3.5 0"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
-                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                class="rotatable clickable">
             </a-entity>
             <a-entity 
                 gltf-model="#alprazolam-structure"
                 position="60 2 -20"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
-                animation="property: rotation; to: 0 360 0; loop: true; dur: 2000; easing: linear">
+                class="rotatable clickable">
+            </a-entity>
+            <a-entity 
+                gltf-model="#display"
+                position="65 -0.7 10"
+                scale="1 1 1"
+                rotation="0 -140 0">
+            </a-entity>
+            <a-entity 
+                gltf-model="#display"
+                position="65 -0.7 -27"
+                scale="1 1 1"
+                rotation="0 -50 0">
             </a-entity>
 
-            <a-entity 
-                gltf-model="#etomidate"
+            <a-box 
                 position="80 14 40"
-                scale="0.2 0.2 0.2"
-                rotation="90 0 0">
-            </a-entity>
+                class="clickable rotatable"
+                width="12"
+                depth="12"
+                height="28"
+                opacity="0">
+                <a-entity 
+                    gltf-model="#etomidate"
+                    position="0 0 0"
+                    scale="0.2 0.2 0.2"
+                    rotation="90 0 0">
+                </a-entity>
+
+                <a-entity position="-9 1.25 4.5" rotation="-90 -57 0" animation="property: position; to: -7.25 1.25 3.5; dir: alternate; loop: true; dur: 800">
+
+                    <a-cylinder height="2" radius="0.05" color="red" position="0 0.5 0"></a-cylinder>
+                    <a-cone radius-bottom="0.15" height="0.5" color="red" position="0 1.5 0"></a-cone>
+                
+                </a-entity>
+            </a-box>
             <a-entity 
                 gltf-model="#etomidate-site"
                 position="60 3.5 50"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
-                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                class="rotatable clickable">
             </a-entity>
             <a-entity 
                 gltf-model="#etomidate-structure"
                 position="60 2 30"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
-                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                class="rotatable clickable">
             </a-entity>
-
+            <a-entity 
+                gltf-model="#display"
+                position="65 -0.7 60"
+                scale="1 1 1"
+                rotation="0 -140 0">
+            </a-entity>
+            <a-entity 
+                gltf-model="#display"
+                position="65 -0.7 20"
+                scale="1 1 1"
+                rotation="0 -50 0">
+            </a-entity>
             <a-entity 
                 gltf-model="#GABA"
                 position="30 15 30"
                 scale="0.2 0.2 0.2"
-                rotation="165 210 -30">
+                rotation="165 210 -30"
+                class="rotatable clickable">
             </a-entity>
             <a-entity 
                 gltf-model="#GABA-site"
                 position="35 3.5 30"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
-                animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+                class="rotatable clickable">
             </a-entity>
             <a-entity 
                 gltf-model="#GABA-structure"
@@ -408,6 +573,24 @@
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
                 animation="property: rotation; to: 0 360 0; loop: true; dur: 20000; easing: linear">
+            </a-entity>
+            <a-entity 
+                gltf-model="#display"
+                position="0 0 5"
+                scale="1 1 1"
+                rotation="0 0 0">
+            </a-entity>
+            <a-entity 
+                gltf-model="#display"
+                position="0 0 -5"
+                scale="1 1 1"
+                rotation="0 0 0">
+            </a-entity>
+            <a-entity 
+                gltf-model="#display"
+                position="0 0 0"
+                scale="1 1 1"
+                rotation="0 0 0">
             </a-entity>
 
             
