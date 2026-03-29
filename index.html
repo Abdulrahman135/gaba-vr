@@ -892,14 +892,14 @@
 
             // When clicking an object → set it as active
             objects.forEach(obj => {
-            obj.addEventListener('mousedown', () => {
+            obj.addEventListener('triggerdown', () => {
                 isDragging = true;
                 activeObject = obj;
             });
             });
 
             // Stop dragging
-            window.addEventListener('mouseup', () => {
+            window.addEventListener('triggereup', () => {
             isDragging = false;
             activeObject = null;
             });
