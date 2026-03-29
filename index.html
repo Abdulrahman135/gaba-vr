@@ -3,7 +3,8 @@
     <head>
         <title>GABA-VR</title>
         <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
-        <script src="https://unpkg.com/aframe-look-at-component@latest/dist/aframe-look-at-component.min.js"></script>       
+        <script src="https://unpkg.com/aframe-look-at-component@latest/dist/aframe-look-at-component.min.js"></script>
+        <script src="https://unpkg.com/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
          <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const obj = document.querySelector('#myObject');
@@ -89,14 +90,13 @@
                 line="color: blue">
             </a-entity>
 
-            <a-entity camera position="0 1.6 25"
-                look-controls="acceleration: 20"
-                wasd-controls>
-                <a-cursor raycaster="objects: .clickable"
-                            color="black"
-                            fuse="false">
-                </a-cursor>
-            </a-entity>
+            <a-entity id="rig" movement-controls="speed: 0.2">
+        <a-entity camera position="0 1.6 0" look-controls></a-entity>
+
+        <!-- Controllers -->
+        <a-entity oculus-touch-controls="hand: left"></a-entity>
+        <a-entity oculus-touch-controls="hand: right"></a-entity>
+      </a-entity>
             <a-box 
                 id="myObject"
                 position="-2 1.6 -3"
