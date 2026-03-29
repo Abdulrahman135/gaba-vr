@@ -3,8 +3,7 @@
     <head>
         <title>GABA-VR</title>
         <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
-        <script src="https://unpkg.com/aframe-look-at-component@latest/dist/aframe-look-at-component.min.js"></script>
-        <script src="https://unpkg.com/aframe-extras@7.0.0/dist/aframe-extras.min.js"></script>
+        <script src="https://unpkg.com/aframe-look-at-component@latest/dist/aframe-look-at-component.min.js"></script>       
          <script>
             document.addEventListener('DOMContentLoaded', () => {
                 const obj = document.querySelector('#myObject');
@@ -90,7 +89,14 @@
                 line="color: blue">
             </a-entity>
 
-          
+            <a-entity camera position="0 1.6 25"
+                look-controls="pointerLockEnabled: true" 
+                wasd-controls>
+                <a-cursor raycaster="objects: .clickable"
+                            color="black"
+                            fuse="false">
+                </a-cursor>
+            </a-entity>
             <a-box 
                 id="myObject"
                 position="-2 1.6 -3"
@@ -886,20 +892,20 @@
 
             // When clicking an object → set it as active
             objects.forEach(obj => {
-            obj.addEventListener('triggerdown', () => {
+            obj.addEventListener('mousedown', () => {
                 isDragging = true;
                 activeObject = obj;
             });
             });
 
             // Stop dragging
-            window.addEventListener('triggereup', () => {
+            window.addEventListener('mouseup', () => {
             isDragging = false;
             activeObject = null;
             });
 
             // Rotate only the active object
-            window.addEventListener('handmove', (e) => {
+            window.addEventListener('mousemove', (e) => {
             if (!isDragging || !activeObject) return;
 
             let rotation = activeObject.getAttribute('rotation');
