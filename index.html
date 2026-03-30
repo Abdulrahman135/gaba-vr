@@ -3,27 +3,65 @@
     <head>
         <title>GABA-VR</title>
         <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
-        <script src="https://unpkg.com/aframe-look-at-component@latest/dist/aframe-look-at-component.min.js"></script>       
-         <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                const obj = document.querySelector('#myObject');
-                const panel = document.querySelector('#infoPanel');
-
-                obj.addEventListener('click', () => {
-                panel.setAttribute('visible', true);
-                });
-            });
-        </script>    
         <script>
-        obj.addEventListener('click', () => {
-            panel.setAttribute('visible', true);
-            panel.emit('showPanel');
-        });
-        </script>     
-          
+            AFRAME.registerComponent('rotate-on-trigger-hover', {
+            init: function () {
+                this.hovering = false;
+                this.rotating = false;
+                this.direction = 1;
+                this.activeHand = null;
+
+                // When controller points at object
+                this.el.addEventListener('mouseenter', (e) => {
+                this.hovering = true;
+
+                const hand = e.detail.cursorEl;
+                this.activeHand = hand;
+
+                if (hand && hand.getAttribute('laser-controls')) {
+                    const handType = hand.getAttribute('laser-controls').hand;
+                    this.direction = (handType === 'left') ? -1 : 1;
+                }
+
+                // Listen for trigger on THIS controller only
+                if (this.activeHand) {
+                    this.activeHand.addEventListener('triggerdown', this.onTriggerDown);
+                    this.activeHand.addEventListener('triggerup', this.onTriggerUp);
+                }
+                });
+
+                this.el.addEventListener('mouseleave', () => {
+                this.hovering = false;
+                this.rotating = false;
+
+                if (this.activeHand) {
+                    this.activeHand.removeEventListener('triggerdown', this.onTriggerDown);
+                    this.activeHand.removeEventListener('triggerup', this.onTriggerUp);
+                }
+
+                this.activeHand = null;
+                });
+
+                // Bind functions so removeEventListener works correctly
+                this.onTriggerDown = () => {
+                if (this.hovering) this.rotating = true;
+                };
+
+                this.onTriggerUp = () => {
+                this.rotating = false;
+                };
+            },
+
+            tick: function () {
+                if (!this.rotating) return;
+
+                this.el.object3D.rotation.y += 0.05 * this.direction;
+            }
+            });
+        </script>
     </head>
     <body>
-        
+     
         <a-scene>
             <a-assets>
                 
@@ -62,67 +100,41 @@
                 <a-asset-item id="display" src="3dassets\display.glb"></a-asset-item>
 
                 <img id="floor-texture" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
-                <img id="normal-floor" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
-
-                <img id="bricks" src="textures\brickwall1\BricksLongThinRunningExtruded001_COL_2K_METALNESS.png">
-                <img id="normal-bricks" src="textures\brickwall1\BricksLongThinRunningExtruded001_NRM_2K_METALNESS.png">
-
-                <img id="cement" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
-                <img id="normal-cement" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
-
-                <img id="metal" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
-                <img id="normal-metal" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
-
-                <img id="tiles" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
-                <img id="normal-tiles" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
-            
-            </a-assets>
-            <a-entity 
-                laser-controls="hand: right"
-                raycaster="objects: .clickable"
-                line="color: red">
-            </a-entity>
-
-            <a-entity 
-                laser-controls="hand: left"
-                raycaster="objects: .clickable"
-                line="color: blue">
-            </a-entity>
-
-            <a-entity camera position="0 1.6 25"
-                look-controls="pointerLockEnabled: true" 
-                wasd-controls>
-                <a-cursor raycaster="objects: .clickable"
-                            color="black"
-                            fuse="false">
-                </a-cursor>
-            </a-entity>
-            <a-box 
-                id="myObject"
-                position="-2 1.6 -3"
-                color="blue"
-                class="clickable"
-                event-set__enter="color: red"
-                event-set__leave="color: blue">
-            </a-box>
-            <a-plane 
-                id="infoPanel"
-                position="-2 2 -2"
-                width="2"
-                height="1"
-                color="white"
-                visible="false"
-                look-at="[camera]"
-                animation="property: scale; to: 1 1 1; dur: 300; startEvents: showPanel">
+                <img id="2ddiazepam" src="3dassets/diazepam.jpg">
+                <img id="2dflumazenil" src="3dassets\flumazenil.jpg">
+                <img id="2dzolpidem" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+                <img id="2dalprazolam" src="3dassets/alprazolam.jpg">
+                <img id="2detomidate" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+                <img id="2dpicrotoxin" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+                <img id="2dloreclezole" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+                <img id="1" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+                <img id="2" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+                <img id="3" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+                <img id="all" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
                 
-                <a-text 
-                    value="This is diazepam"
-                    color="black"
-                    align="center"
-                    position="0 0 0.01">
-                </a-text>
+            </a-assets>
+            
+            <!-- Camera -->
+            <a-entity id="rig" movement-controls="speed: 0.3">
+                <a-entity 
+                    camera position="0 1.8 0"
+                    look-controls
+                    wasd-controls></a-entity>
 
-            </a-plane>
+                <!-- RIGHT CONTROLLER (laser) -->
+                <a-entity
+                laser-controls="hand: right"
+                oculus-touch-controls="hand: right"
+                raycaster="objects: .hoverable"
+                cursor="rayOrigin: controller">
+                </a-entity>
+                <a-entity
+                laser-controls="hand: left"
+                oculus-touch-controls="hand: left"
+                raycaster="objects: .hoverable"
+                cursor="rayOrigin: controller">
+                </a-entity>
+            </a-entity>
             <a-sky color="#D3D3D3"></a-sky>
             <a-plane 
                     material="
@@ -137,16 +149,7 @@
                     height="200"
                     rotation="-90 0 0">
             </a-plane>
-            <a-entity 
-                geometry="primitive: box; width: 202; height: 2; depth: 1"
-                position="0 1 100"
-                material="
-                    src:#bricks;
-                    normal-map:#normal-bricks;
-                    roughness:0.7;
-                    repeat:30 0.2;
-                    normal-texture-repeat:30 0.2;">
-            </a-entity>
+            
 
             <a-cylinder color="blue"
                         position="0 0 -70"
@@ -234,7 +237,8 @@
             </a-cylinder>
             <a-box 
                 position="1 15.5 -70"
-                class="clickable rotatable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 width="12"
                 depth="12"
                 height="28"
@@ -255,7 +259,8 @@
              
             </a-box>
             <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="10 3.5 -50"
                 radius="3"
                 opacity="0">
@@ -319,7 +324,8 @@
                 rotation="0 -50 0">
             </a-entity>
             <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="-10 2 -51"
                 radius="3"
                 opacity="0">
@@ -333,14 +339,21 @@
             
             <a-entity 
                 gltf-model="#display"
-                position="-17 -.7 -51"
+                position="-15 -.7 -45.5"
                 scale="1 1 1"
-                rotation="0 50 0">
+                rotation="0 57.5 0">
+                <a-image 
+                    src="#2ddiazepam" 
+                    position="-0.01 5.182 0.099" 
+                    width="6.86" 
+                    height="5.07">
+                </a-image>
             </a-entity>
 
             <a-box 
                 position="50 15 -72"
-                class="clickable rotatable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 width="12"
                 depth="12"
                 height="28"
@@ -360,7 +373,8 @@
                 </a-entity>
             </a-box>
             <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="60 3.5 -49.5"
                 radius="3"
                 opacity="0">
@@ -408,7 +422,8 @@
                 </a-cylinder>
             </a-sphere>
             <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="40 2 -50"
                 radius="3"
                 opacity="0">
@@ -428,13 +443,20 @@
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="30 -0.70 -51"
+                position="35 -0.70 -45.5"
                 scale="1 1 1"
                 rotation="0 50 0">
+                <a-image 
+                    src="#2dflumazenil" 
+                    position="0.034 5.28 0.058" 
+                    width="6.82" 
+                    height="4.43">
+                </a-image>
             </a-entity>
             <a-box 
                 position="-51 15 -72"
-                class="clickable rotatable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 width="12"
                 depth="12"
                 height="28"
@@ -454,7 +476,8 @@
                 </a-entity>
             </a-box>
             <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="-40 3.5 -50"
                 radius="3"
                 opacity="0">
@@ -502,7 +525,8 @@
                 </a-cylinder>
             </a-sphere>
             <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="-60 2 -50"
                 radius="3"
                 opacity="0">
@@ -585,7 +609,8 @@
             <a-box 
                 position="-80 13 40"
                 rotation="0 -100 0"
-                class="clickable rotatable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 width="12"
                 depth="12"
                 height="28"
@@ -605,7 +630,8 @@
                 </a-entity>
             </a-box>
             <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="-60 3 30"
                 radius="3"
                 opacity="0">
@@ -635,7 +661,8 @@
                 </a-cylinder>
             </a-sphere>
             <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="-60 2 50"
                 radius="3"
                 opacity="0">
@@ -662,7 +689,8 @@
             
             <a-box 
                 position="81 14 -11"
-                class="clickable rotatable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 width="12"
                 depth="12"
                 height="28"
@@ -683,7 +711,8 @@
             </a-box>
             
             <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="60 3.5 0"
                 radius="3"
                 opacity="0">
@@ -750,7 +779,8 @@
             </a-sphere>
             
            <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="60 2 -20"
                 radius="3"
                 opacity="0">
@@ -770,14 +800,21 @@
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="65 -0.7 -27"
+                position="53.5 -0.7 -25"
                 scale="1 1 1"
-                rotation="0 -50 0">
+                rotation="0 -30 0">
+                <a-image 
+                    src="#2dalprazolam" 
+                    position="0.021 5.113 0.101" 
+                    width="6.44" 
+                    height="4.6">
+                </a-image>
             </a-entity>
 
             <a-box 
                 position="80 14 40"
-                class="clickable rotatable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 width="12"
                 depth="12"
                 height="28"
@@ -797,7 +834,8 @@
                 </a-entity>
             </a-box>
             <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="60 3 50"
                 radius="3"
                 opacity="0">
@@ -818,7 +856,8 @@
                 </a-cylinder>
             </a-sphere>
             <a-sphere
-                class="rotatable clickable"
+                class="hoverable"
+                rotate-on-trigger-hover
                 position="60 2 30"
                 radius="3"
                 opacity="0">
@@ -847,14 +886,16 @@
                 position="30 15 30"
                 scale="0.2 0.2 0.2"
                 rotation="165 210 -30"
-                class="rotatable clickable">
+                class="hoverable"
+                rotate-on-trigger-hover>
             </a-entity>
             <a-entity 
                 gltf-model="#GABA-site"
                 position="35 3.5 30"
                 scale="0.25 0.25 0.25"
                 rotation="0 0 0"
-                class="rotatable clickable">
+                class="hoverable"
+                rotate-on-trigger-hover>
             </a-entity>
             <a-entity 
                 gltf-model="#GABA-structure"
@@ -865,56 +906,24 @@
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="0 0 5"
+                position="0 0 53"
                 scale="1 1 1"
-                rotation="0 0 0">
+                rotation="0 0 50">
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="0 0 -5"
+                position="0 0 43"
                 scale="1 1 1"
-                rotation="0 0 0">
+                rotation="0 0 40">
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="0 0 0"
+                position="0 0 43"
                 scale="1 1 1"
                 rotation="0 0 0">
             </a-entity>
            
         </a-scene>
-        <script>
-            let isDragging = false;
-            let activeObject = null;
-
-            // Get all rotatable objects
-            const objects = document.querySelectorAll('.rotatable');
-
-            // When clicking an object → set it as active
-            objects.forEach(obj => {
-            obj.addEventListener('mousedown', () => {
-                isDragging = true;
-                activeObject = obj;
-            });
-            });
-
-            // Stop dragging
-            window.addEventListener('mouseup', () => {
-            isDragging = false;
-            activeObject = null;
-            });
-
-            // Rotate only the active object
-            window.addEventListener('mousemove', (e) => {
-            if (!isDragging || !activeObject) return;
-
-            let rotation = activeObject.getAttribute('rotation');
-
-            rotation.y += e.movementX * 0.5;
-            
-
-            activeObject.setAttribute('rotation', rotation);
-            });
-        </script> 
+        
     </body>
 </html>
