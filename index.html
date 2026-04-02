@@ -59,6 +59,7 @@
             }
             });
         </script>
+        
     </head>
     <body>
      
@@ -96,28 +97,32 @@
                 <a-asset-item id="GABA" src=""></a-asset-item>
                 <a-asset-item id="GABA-site" src="GABA\GABA-site.glb"></a-asset-item>
                 <a-asset-item id="GABA-structure" src="GABA\GABA-structure.glb"></a-asset-item>
-                
+                <a-asset-item id="3dbutton" src="3dassets\button.glb"></a-asset-item>
                 <a-asset-item id="display" src="3dassets\display.glb"></a-asset-item>
 
                 <img id="floor-texture" src="textures\Poliigon_ConcretePaversSquare_7100_BaseColor.jpg">
+                <img id="normal-floor" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
                 <img id="2ddiazepam" src="3dassets/diazepam.jpg">
                 <img id="2dflumazenil" src="3dassets\flumazenil.jpg">
-                <img id="2dzolpidem" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
                 <img id="2dalprazolam" src="3dassets/alprazolam.jpg">
-                <img id="2detomidate" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
-                <img id="2dpicrotoxin" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
-                <img id="2dloreclezole" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
-                <img id="1" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
-                <img id="2" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
-                <img id="3" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
-                <img id="all" src="textures\Poliigon_ConcretePaversSquare_7100_Normal.png">
+                <img id="2dzolpidem" src="3dassets/zolpidem.jpg">
+                <img id="2detomidate" src="3dassets\etomidate.jpg">
+                <img id="2dpicrotoxin" src="3dassets\picrotoxin.jpg">
+                <img id="2dloreclezole" src="3dassets\loreclezole.jpg">
+                <img id="info1" src="3dassets\info1.jpeg">
+                <img id="info2" src="3dassets\info2.jpeg">
+                <img id="info3" src="3dassets\info3.jpeg">
+                <img id="info4" src="3dassets\info4.jpeg">
+                <img id="info5" src="3dassets\info5.jpeg">
+                <img id="info6" src="3dassets\info6.jpeg">
+                <img id="info7" src="3dassets\info7.jpeg">
                 
             </a-assets>
             
             <!-- Camera -->
             <a-entity id="rig" movement-controls="speed: 0.3">
                 <a-entity 
-                    camera position="0 1.8 0"
+                    camera position="0 2 0"
                     look-controls
                     wasd-controls></a-entity>
 
@@ -125,13 +130,13 @@
                 <a-entity
                 laser-controls="hand: right"
                 oculus-touch-controls="hand: right"
-                raycaster="objects: .hoverable"
+                raycaster="objects: .hoverable, .clickable"
                 cursor="rayOrigin: controller">
                 </a-entity>
                 <a-entity
                 laser-controls="hand: left"
                 oculus-touch-controls="hand: left"
-                raycaster="objects: .hoverable"
+                raycaster="objects: .hoverable, .clickable"
                 cursor="rayOrigin: controller">
                 </a-entity>
             </a-entity>
@@ -235,14 +240,26 @@
                         position="60 0 50"
                         radius="3">
             </a-cylinder>
-            <a-box 
+            
+            
+            
+            <a-box id="box1"
                 position="1 15.5 -70"
                 class="hoverable"
                 rotate-on-trigger-hover
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0">
+                opacity="0"
+                animation__forward="property: position; 
+                           to: 1 5.5 -70; 
+                           dur: 1000; 
+                           startEvents: goForward1"
+
+                animation__back="property: position; 
+                            to: 1 15.5 -70; 
+                            dur: 1000; 
+                            startEvents: goBack1">
                 <a-entity 
                     gltf-model="#diazepam"
                     position="0 0 0"
@@ -319,9 +336,15 @@
             
             <a-entity 
                 gltf-model="#display"
-                position="20 -0.7 -51"
+                position="66 -.7 -45.7"
                 scale="1 1 1"
                 rotation="0 -50 0">
+                <a-image 
+                    src="#info1" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
             <a-sphere
                 class="hoverable"
@@ -345,19 +368,28 @@
                 <a-image 
                     src="#2ddiazepam" 
                     position="-0.01 5.182 0.099" 
-                    width="6.86" 
-                    height="5.07">
+                    width="7.15" 
+                    height="5.22">
                 </a-image>
             </a-entity>
 
-            <a-box 
+            <a-box id="box2"
                 position="50 15 -72"
                 class="hoverable"
                 rotate-on-trigger-hover
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0">
+                opacity="0"
+                animation__forward="property: position; 
+                           to: 50 5 -72; 
+                           dur: 1000; 
+                           startEvents: goForward2"
+
+                animation__back="property: position; 
+                            to: 50 15 -72; 
+                            dur: 1000; 
+                            startEvents: goBack2">
                 <a-entity 
                     gltf-model="#flumazenil"
                     position="0 0 0"
@@ -437,9 +469,15 @@
             
             <a-entity 
                 gltf-model="#display"
-                position="70 -0.70 -51"
+                position="16 -0.70 -45.7"
                 scale="1 1 1"
                 rotation="0 -50 0">
+                <a-image 
+                    src="#info1" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
             <a-entity 
                 gltf-model="#display"
@@ -448,19 +486,28 @@
                 rotation="0 50 0">
                 <a-image 
                     src="#2dflumazenil" 
-                    position="0.034 5.28 0.058" 
-                    width="6.82" 
-                    height="4.43">
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
                 </a-image>
             </a-entity>
-            <a-box 
+            <a-box id="box3"
                 position="-51 15 -72"
                 class="hoverable"
                 rotate-on-trigger-hover
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0">
+                opacity="0"
+                animation__forward="property: position; 
+                           to: -51 5 -72; 
+                           dur: 1000; 
+                           startEvents: goForward3"
+
+                animation__back="property: position; 
+                            to: -51 15 -72; 
+                            dur: 1000; 
+                            startEvents: goBack3">
                 <a-entity 
                     gltf-model="#zolpidem"
                     position="0 0 0"
@@ -540,21 +587,49 @@
             
             <a-entity 
                 gltf-model="#display"
-                position="-30 -0.7 -50"
+                position="-34 -0.7 -45.7"
                 scale="1 1 1"
                 rotation="0 -50 0">
+                <a-image 
+                    src="#info1" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="-67 -0.7 -51"
+                position="-64 -0.7 -44"
                 scale="1 1 1"
-                rotation="0 50 0">
+                rotation="0 65 0">
+                <a-image 
+                    src="#2dzolpidem" 
+                    position="-0.01 5.26 0.099" 
+                    width="7.55" 
+                    height="4.9">
+                </a-image>
             </a-entity>
-            <a-entity 
+            <a-entity id="box4"
                 gltf-model="#picrotoxin"
                 position="-80 15 -10"
                 scale="0.2 0.2 0.2"
-                rotation="55 90 0">
+                rotation="55 90 0"
+                animation__forward="property: position; 
+                           to: -80 5 -10; 
+                           dur: 1000; 
+                           startEvents: goForward4"
+
+                animation__back="property: position; 
+                            to: -80 15 -10; 
+                            dur: 1000; 
+                            startEvents: goBack4">>
+                <a-sphere
+                    position="1.489 -0.861 27.575"
+                    radius="4.25"
+                    color="red"
+                    opacity="0"
+                    animation="property:material.opacity; to: 0.7; dur: 2000; loop: true; dir: alternate">
+                </a-sphere>
             </a-entity>
             <a-sphere
                 animation="property: rotation; to: 10 70 360; loop: true; dur: 20000; easing: linear"
@@ -596,17 +671,29 @@
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="-65 -0.7 -27"
+                position="-56 -0.7 -27.6"
                 scale="1 1 1"
                 rotation="0 50 0">
+                <a-image 
+                    src="#info2" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="-65 -0.7 10"
+                position="-56 -0.7 7.3"
                 scale="1 1 1"
-                rotation="0 140 0">
+                rotation="0 150 0">
+                <a-image 
+                    src="#2dpicrotoxin" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
-            <a-box 
+            <a-box id="box5"
                 position="-80 13 40"
                 rotation="0 -100 0"
                 class="hoverable"
@@ -614,7 +701,16 @@
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0">
+                opacity="0"
+                animation__forward="property: position; 
+                           to: -80 3 40; 
+                           dur: 1000; 
+                           startEvents: goForward5"
+
+                animation__back="property: position; 
+                            to: -80 13 40; 
+                            dur: 1000; 
+                            startEvents: goBack5">
                 <a-entity 
                     gltf-model="#loreclezole"
                     position="0 0 0"
@@ -676,25 +772,47 @@
            
             <a-entity 
                 gltf-model="#display"
-                position="-65 -0.7 60"
+                position="-55 -0.7 55.6"
                 scale="1 1 1"
-                rotation="0 140 0">
+                rotation="0 155 0">
+                <a-image 
+                    src="#2dloreclezole" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="-65 -0.7 20"
+                position="-56 -0.7 20"
                 scale="1 1 1"
-                rotation="0 50 0">
+                rotation="0 37 0">
+                <a-image 
+                    src="#info2" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
+                
             </a-entity>
             
-            <a-box 
+            <a-box id="box6"
                 position="81 14 -11"
                 class="hoverable"
                 rotate-on-trigger-hover
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0">
+                opacity="0"
+                animation__forward="property: position; 
+                           to: 81 4 -11; 
+                           dur: 1000; 
+                           startEvents: goForward6"
+
+                animation__back="property: position; 
+                            to: 81 14 -11; 
+                            dur: 1000; 
+                            startEvents: goBack6">
                 <a-entity 
                     gltf-model="#alprazolam"
                     position="0 -3.5 0"
@@ -794,9 +912,15 @@
             
             <a-entity 
                 gltf-model="#display"
-                position="65 -0.7 10"
+                position="53.5 -0.7 10"
                 scale="1 1 1"
-                rotation="0 -140 0">
+                rotation="0 -145 0">
+                <a-image 
+                    src="#info3" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
             <a-entity 
                 gltf-model="#display"
@@ -805,20 +929,29 @@
                 rotation="0 -30 0">
                 <a-image 
                     src="#2dalprazolam" 
-                    position="0.021 5.113 0.101" 
-                    width="6.44" 
-                    height="4.6">
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
                 </a-image>
             </a-entity>
 
-            <a-box 
+            <a-box id="box7"
                 position="80 14 40"
                 class="hoverable"
                 rotate-on-trigger-hover
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0">
+                opacity="0"
+                animation__forward="property: position; 
+                           to: 80 4 40; 
+                           dur: 1000; 
+                           startEvents: goForward7"
+
+                animation__back="property: position; 
+                            to: 80 14 40; 
+                            dur: 1000; 
+                            startEvents: goBack7">
                 <a-entity 
                     gltf-model="#etomidate"
                     position="0 -1 0"
@@ -871,32 +1004,29 @@
             
             <a-entity 
                 gltf-model="#display"
-                position="65 -0.7 60"
+                position="54 -0.7 56"
                 scale="1 1 1"
-                rotation="0 -140 0">
+                rotation="0 -145 0">
+                <a-image 
+                    src="#info3" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="65 -0.7 20"
+                position="53 -0.7 24"
                 scale="1 1 1"
-                rotation="0 -50 0">
+                rotation="0 -30 0">
+                <a-image 
+                    src="#2detomidate" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
-            <a-entity 
-                gltf-model="#GABA"
-                position="30 15 30"
-                scale="0.2 0.2 0.2"
-                rotation="165 210 -30"
-                class="hoverable"
-                rotate-on-trigger-hover>
-            </a-entity>
-            <a-entity 
-                gltf-model="#GABA-site"
-                position="35 3.5 30"
-                scale="0.25 0.25 0.25"
-                rotation="0 0 0"
-                class="hoverable"
-                rotate-on-trigger-hover>
-            </a-entity>
+
             <a-entity 
                 gltf-model="#GABA-structure"
                 position="25 2 30"
@@ -906,24 +1036,168 @@
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="0 0 53"
+                position="15.2 0 18.83"
                 scale="1 1 1"
-                rotation="0 0 50">
+                rotation="0 230 0">
+                <a-image 
+                    src="#info4" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="0 0 43"
+                position="-9 0 24"
                 scale="1 1 1"
-                rotation="0 0 40">
+                rotation="0 150 0">
+                <a-image 
+                    src="#info5" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
             <a-entity 
                 gltf-model="#display"
-                position="0 0 43"
+                position="9 0 24"
                 scale="1 1 1"
-                rotation="0 0 0">
+                rotation="0 210 0">
+                <a-image 
+                    src="#info7" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
             </a-entity>
-           
-        </a-scene>
+            <a-entity 
+                gltf-model="#display"
+                position="-15.2 0 18.83"
+                scale="1 1 1"
+                rotation="0 130 0">
+                <a-image 
+                    src="#info6" 
+                    position="-0.01 5.182 0.099" 
+                    width="7.45" 
+                    height="5">
+                </a-image>
+            </a-entity>
+            
+            <a-box id="box0"
+                scale="0.4 0.4 0.4"
+                position="0 6 26.5"
+                class="hoverable"
+                rotate-on-trigger-hover
+                width="12"
+                depth="12"
+                height="28"
+                opacity="0"
+                animation__forward="property: position; 
+                           to: 1 5.5 -70; 
+                           dur: 1000; 
+                           startEvents: goForward1"
+
+                animation__back="property: position; 
+                            to: 1 15.5 -70; 
+                            dur: 1000; 
+                            startEvents: goBack1">
+                <a-entity 
+                    gltf-model="#diazepam"
+                    position="0 0 0"
+                    scale="0.2 0.2 0.2"
+                    rotation="170 0 50">
+                </a-entity>
+                <a-box
+                position="0 -4.485 0"
+                    height="0.05"
+                    width="16"
+                    depth="16"
+                    color="cyan"
+                    opacity="0.15">
+                </a-box>
+                <a-sphere
+                    position="0 5 0"
+                    radius=".08"
+                    color="lime"
+                    opacity="1"
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 1000 ">
+                </a-sphere>
+                <a-sphere
+                    position="0 5 0"
+                    radius=".08"
+                    color="lime"
+                    opacity="1"
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 2000 ">
+                </a-sphere>
+                <a-sphere
+                    position="0 5 0"
+                    radius=".08"
+                    color="lime"
+                    opacity="1"
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 3000 ">
+                </a-sphere>
+                <a-sphere
+                    position="0 5 0"
+                    radius=".08"
+                    color="lime"
+                    opacity="1"
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 4000 ">
+                </a-sphere>
+                <a-sphere
+                    position="0 5 0"
+                    radius=".08"
+                    color="lime"
+                    opacity="1"
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 5000 ">
+                </a-sphere>
+                <a-sphere
+                    position="0 5 0"
+                    radius=".08"
+                    color="lime"
+                    opacity="1"
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 6000 ">
+                </a-sphere>
+                <a-sphere
+                    position="0 5 0"
+                    radius=".08"
+                    color="lime"
+                    opacity="1"
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 7000 ">
+                </a-sphere>
+                <a-sphere
+                    position="0 5 0"
+                    radius=".08"
+                    color="lime"
+                    opacity="1"
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 8000 ">
+                </a-sphere>
+                <a-sphere
+                    position="0 5 0"
+                    radius=".08"
+                    color="lime"
+                    opacity="1"
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 9000 ">
+                </a-sphere>
+                <a-sphere
+                    position="0 5 0"
+                    radius=".08"
+                    color="lime"
+                    opacity="1"
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 10000 ">
+                </a-sphere>
+
+                <a-entity position="-9 1.25 4.5" rotation="-90 -57 0" animation="property: position; to: -7.25 1.25 3.5; dir: alternate; loop: true; dur: 800">
+
+                    <a-cylinder height="2" radius="0.05" color="red" position="0 0.5 0"></a-cylinder>
+                    <a-cone radius-bottom="0.15" height="0.5" color="red" position="0 1.5 0"></a-cone>
+                
+                </a-entity>
+             
+            </a-box>
+            
+            </a-scene>
+
+        
         
     </body>
 </html>
