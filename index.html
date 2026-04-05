@@ -3,62 +3,107 @@
     <head>
         <title>GABA-VR</title>
         <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/aframe-extras@7.5.0/dist/aframe-extras.min.js"></script>
         <script>
-            AFRAME.registerComponent('rotate-on-trigger-hover', {
-            init: function () {
-                this.hovering = false;
-                this.rotating = false;
-                this.direction = 1;
-                this.activeHand = null;
-
-                // When controller points at object
-                this.el.addEventListener('mouseenter', (e) => {
-                this.hovering = true;
-
-                const hand = e.detail.cursorEl;
-                this.activeHand = hand;
-
-                if (hand && hand.getAttribute('laser-controls')) {
-                    const handType = hand.getAttribute('laser-controls').hand;
-                    this.direction = (handType === 'left') ? -1 : 1;
-                }
-
-                // Listen for trigger on THIS controller only
-                if (this.activeHand) {
-                    this.activeHand.addEventListener('triggerdown', this.onTriggerDown);
-                    this.activeHand.addEventListener('triggerup', this.onTriggerUp);
-                }
-                });
-
-                this.el.addEventListener('mouseleave', () => {
-                this.hovering = false;
-                this.rotating = false;
-
-                if (this.activeHand) {
-                    this.activeHand.removeEventListener('triggerdown', this.onTriggerDown);
-                    this.activeHand.removeEventListener('triggerup', this.onTriggerUp);
-                }
-
-                this.activeHand = null;
-                });
-
-                // Bind functions so removeEventListener works correctly
-                this.onTriggerDown = () => {
-                if (this.hovering) this.rotating = true;
-                };
-
-                this.onTriggerUp = () => {
-                this.rotating = false;
-                };
-            },
-
-            tick: function () {
-                if (!this.rotating) return;
-
-                this.el.object3D.rotation.y += 0.05 * this.direction;
-            }
-            });
+            AFRAME.registerComponent('drag-rotate-move', {
+  schema: {
+    rotateSensitivity: { default: 3.0 },
+    moveSensitivity: { default: 1.0 }
+  },
+  init: function () {
+    this.dragging = false;
+    this.activeHand = null;
+    this.prevHandPos = new THREE.Vector3();
+    this.currHandPos = new THREE.Vector3();
+    this.onTriggerDown = () => {
+      if (this.activeHand) {
+        this.dragging = true;
+        this.activeHand.object3D.getWorldPosition(this.prevHandPos);
+      }
+    };
+    this.onTriggerUp = () => {
+      this.dragging = false;
+    };
+    this.el.addEventListener('mouseenter', (e) => {
+      const hand = e.detail.cursorEl;
+      if (!hand) return;
+      this.activeHand = hand;
+      hand.addEventListener('triggerdown', this.onTriggerDown);
+      hand.addEventListener('triggerup', this.onTriggerUp);
+    });
+    this.el.addEventListener('mouseleave', () => {
+      // Keep listening if still dragging, clean up only when not holding
+      if (!this.dragging && this.activeHand) {
+        this.activeHand.removeEventListener('triggerdown', this.onTriggerDown);
+        this.activeHand.removeEventListener('triggerup', this.onTriggerUp);
+        this.activeHand = null;
+      }
+    });
+  },
+  tick: function () {
+    if (!this.dragging || !this.activeHand) return;
+    this.activeHand.object3D.getWorldPosition(this.currHandPos);
+    const dx = this.currHandPos.x - this.prevHandPos.x;
+    const dy = this.currHandPos.y - this.prevHandPos.y;
+    // Horizontal hand movement → rotate on Y axis
+    this.el.object3D.rotation.y += dx * this.data.rotateSensitivity;
+    // Vertical hand movement → move up/down
+    this.el.object3D.position.y += dy * this.data.moveSensitivity;
+    this.prevHandPos.copy(this.currHandPos);
+  }
+});
         </script>
+        <script>
+AFRAME.registerComponent('thumbstick-locomotion', {
+  schema: {
+    speed: { default: 0.05 },
+    fastSpeed: { default: 0.2 }
+  },
+  init: function () {
+    this.cameraEl = null;
+    this._forward = new THREE.Vector3();
+    this._right = new THREE.Vector3();
+    this._move = new THREE.Vector3();
+  },
+  tick: function (time, delta) {
+    const sceneEl = this.el.sceneEl;
+    if (!sceneEl.is('vr-mode')) return;
+    const xrSession = sceneEl.xrSession;
+    if (!xrSession || !xrSession.inputSources) return;
+    if (!this.cameraEl) {
+      this.cameraEl = this.el.querySelector('[camera]');
+      if (!this.cameraEl) return;
+    }
+    const dt = delta / 1000;
+    const camObj = this.cameraEl.object3D;
+    const rigObj = this.el.object3D;
+    camObj.getWorldDirection(this._forward);
+    this._forward.y = 0;
+    this._forward.normalize();
+    this._right.crossVectors(this._forward, new THREE.Vector3(0, 1, 0)).normalize();
+    this._move.set(0, 0, 0);
+    for (const inputSource of xrSession.inputSources) {
+      const gp = inputSource.gamepad;
+      if (!gp || !gp.axes) continue;
+      const hand = inputSource.handedness;
+      let ax = 0, ay = 1;
+      if (gp.axes.length > 3) { ax = 2; ay = 3; }
+      const stickX = gp.axes[ax] || 0;
+      const stickY = gp.axes[ay] || 0;
+      if (hand === 'left') {
+        // Normal speed movement
+        if (Math.abs(stickY) > 0.15) this._move.addScaledVector(this._forward, stickY * this.data.speed * 60 * dt);
+        if (Math.abs(stickX) > 0.15) this._move.addScaledVector(this._right, -stickX * this.data.speed * 60 * dt);
+      } else if (hand === 'right') {
+        // Fast movement for quick navigation
+        if (Math.abs(stickY) > 0.15) this._move.addScaledVector(this._forward, stickY * this.data.fastSpeed * 60 * dt);
+        if (Math.abs(stickX) > 0.15) this._move.addScaledVector(this._right, -stickX * this.data.fastSpeed * 60 * dt);
+      }
+    }
+    rigObj.position.add(this._move);
+  }
+});
+</script>
         
     </head>
     <body>
@@ -120,26 +165,29 @@
             </a-assets>
             
             <!-- Camera -->
-            <a-entity id="rig" movement-controls="speed: 0.3">
-                <a-entity 
-                    camera position="0 2 0"
-                    look-controls
-                    wasd-controls></a-entity>
+            <a-entity id="rig" thumbstick-locomotion="speed: 0.05; fastSpeed: 0.2" position="0 0 0" rotation="0 180 0">
+                <a-entity
+                    camera
+                    position="0 2 0"
+                    look-controls>
+                </a-entity>
 
-                <!-- RIGHT CONTROLLER (laser) -->
+                <!-- RIGHT CONTROLLER — laser-controls only (handles tracking + raycaster) -->
                 <a-entity
-                laser-controls="hand: right"
-                oculus-touch-controls="hand: right"
-                raycaster="objects: .hoverable, .clickable"
-                cursor="rayOrigin: controller">
+                    laser-controls="hand: right"
+                    raycaster="objects: .hoverable, .clickable"
+                    cursor="rayOrigin: controller">
                 </a-entity>
+
+                <!-- LEFT CONTROLLER — laser-controls only -->
                 <a-entity
-                laser-controls="hand: left"
-                oculus-touch-controls="hand: left"
-                raycaster="objects: .hoverable, .clickable"
-                cursor="rayOrigin: controller">
+                    laser-controls="hand: left"
+                    raycaster="objects: .hoverable, .clickable"
+                    cursor="rayOrigin: controller">
                 </a-entity>
+
             </a-entity>
+
             <a-sky color="#00001a"></a-sky>
             <a-plane 
                     material="
@@ -246,20 +294,11 @@
             <a-box id="box1"
                 position="1 15.5 -70"
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0"
-                animation__forward="property: position; 
-                           to: 1 5.5 -70; 
-                           dur: 1000; 
-                           startEvents: goForward1"
-
-                animation__back="property: position; 
-                            to: 1 15.5 -70; 
-                            dur: 1000; 
-                            startEvents: goBack1">
+                opacity="0">
                 <a-entity 
                     gltf-model="#diazepam"
                     position="0 0 0"
@@ -277,7 +316,7 @@
             </a-box>
             <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="10 3.5 -50"
                 radius="3"
                 opacity="0">
@@ -348,7 +387,7 @@
             </a-entity>
             <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="-10 2 -51"
                 radius="3"
                 opacity="0">
@@ -376,20 +415,11 @@
             <a-box id="box2"
                 position="50 15 -72"
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0"
-                animation__forward="property: position; 
-                           to: 50 5 -72; 
-                           dur: 1000; 
-                           startEvents: goForward2"
-
-                animation__back="property: position; 
-                            to: 50 15 -72; 
-                            dur: 1000; 
-                            startEvents: goBack2">
+                opacity="0">
                 <a-entity 
                     gltf-model="#flumazenil"
                     position="0 0 0"
@@ -406,7 +436,7 @@
             </a-box>
             <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="60 3.5 -49.5"
                 radius="3"
                 opacity="0">
@@ -455,7 +485,7 @@
             </a-sphere>
             <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="40 2 -50"
                 radius="3"
                 opacity="0">
@@ -494,20 +524,11 @@
             <a-box id="box3"
                 position="-51 15 -72"
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0"
-                animation__forward="property: position; 
-                           to: -51 5 -72; 
-                           dur: 1000; 
-                           startEvents: goForward3"
-
-                animation__back="property: position; 
-                            to: -51 15 -72; 
-                            dur: 1000; 
-                            startEvents: goBack3">
+                opacity="0">
                 <a-entity 
                     gltf-model="#zolpidem"
                     position="0 0 0"
@@ -524,7 +545,7 @@
             </a-box>
             <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="-40 3.5 -50"
                 radius="3"
                 opacity="0">
@@ -573,7 +594,7 @@
             </a-sphere>
             <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="-60 2 -50"
                 radius="3"
                 opacity="0">
@@ -613,16 +634,7 @@
                 gltf-model="#picrotoxin"
                 position="-80 15 -10"
                 scale="0.2 0.2 0.2"
-                rotation="55 90 0"
-                animation__forward="property: position; 
-                           to: -80 5 -10; 
-                           dur: 1000; 
-                           startEvents: goForward4"
-
-                animation__back="property: position; 
-                            to: -80 15 -10; 
-                            dur: 1000; 
-                            startEvents: goBack4">>
+                rotation="55 90 0">
                 <a-sphere
                     position="1.489 -0.861 27.575"
                     radius="4.25"
@@ -697,20 +709,11 @@
                 position="-80 13 40"
                 rotation="0 -100 0"
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0"
-                animation__forward="property: position; 
-                           to: -80 3 40; 
-                           dur: 1000; 
-                           startEvents: goForward5"
-
-                animation__back="property: position; 
-                            to: -80 13 40; 
-                            dur: 1000; 
-                            startEvents: goBack5">
+                opacity="0">
                 <a-entity 
                     gltf-model="#loreclezole"
                     position="0 0 0"
@@ -727,7 +730,7 @@
             </a-box>
             <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="-60 3 30"
                 radius="3"
                 opacity="0">
@@ -758,7 +761,7 @@
             </a-sphere>
             <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="-60 2 50"
                 radius="3"
                 opacity="0">
@@ -799,20 +802,11 @@
             <a-box id="box6"
                 position="81 14 -11"
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0"
-                animation__forward="property: position; 
-                           to: 81 4 -11; 
-                           dur: 1000; 
-                           startEvents: goForward6"
-
-                animation__back="property: position; 
-                            to: 81 14 -11; 
-                            dur: 1000; 
-                            startEvents: goBack6">
+                opacity="0">
                 <a-entity 
                     gltf-model="#alprazolam"
                     position="0 -3.5 0"
@@ -830,7 +824,7 @@
             
             <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="60 3.5 0"
                 radius="3"
                 opacity="0">
@@ -898,7 +892,7 @@
             
            <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="60 2 -20"
                 radius="3"
                 opacity="0">
@@ -938,20 +932,11 @@
             <a-box id="box7"
                 position="80 14 40"
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0"
-                animation__forward="property: position; 
-                           to: 80 4 40; 
-                           dur: 1000; 
-                           startEvents: goForward7"
-
-                animation__back="property: position; 
-                            to: 80 14 40; 
-                            dur: 1000; 
-                            startEvents: goBack7">
+                opacity="0">
                 <a-entity 
                     gltf-model="#etomidate"
                     position="0 -1 0"
@@ -968,7 +953,7 @@
             </a-box>
             <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="60 3 50"
                 radius="3"
                 opacity="0">
@@ -990,7 +975,7 @@
             </a-sphere>
             <a-sphere
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 position="60 2 30"
                 radius="3"
                 opacity="0">
@@ -1087,20 +1072,11 @@
                 scale="0.4 0.4 0.4"
                 position="0 6 26.5"
                 class="hoverable"
-                rotate-on-trigger-hover
+                drag-rotate-move="rotateSensitivity: 3.0; moveSensitivity: 1.0"
                 width="12"
                 depth="12"
                 height="28"
-                opacity="0"
-                animation__forward="property: position; 
-                           to: 1 5.5 -70; 
-                           dur: 1000; 
-                           startEvents: goForward1"
-
-                animation__back="property: position; 
-                            to: 1 15.5 -70; 
-                            dur: 1000; 
-                            startEvents: goBack1">
+                opacity="0">
                 <a-entity 
                     gltf-model="#diazepam"
                     position="0 0 0"
@@ -1120,70 +1096,70 @@
                     radius=".08"
                     color="lime"
                     opacity="1"
-                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true; delay: 1000 ">
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 1000 ">
                 </a-sphere>
                 <a-sphere
                     position="0 5 0"
                     radius=".08"
                     color="lime"
                     opacity="1"
-                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true; delay: 2000 ">
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 2000 ">
                 </a-sphere>
                 <a-sphere
                     position="0 5 0"
                     radius=".08"
                     color="lime"
                     opacity="1"
-                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true; delay: 3000 ">
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 3000 ">
                 </a-sphere>
                 <a-sphere
                     position="0 5 0"
                     radius=".08"
                     color="lime"
                     opacity="1"
-                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true; delay: 4000 ">
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 4000 ">
                 </a-sphere>
                 <a-sphere
                     position="0 5 0"
                     radius=".08"
                     color="lime"
                     opacity="1"
-                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true; delay: 5000 ">
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 5000 ">
                 </a-sphere>
                 <a-sphere
                     position="0 5 0"
                     radius=".08"
                     color="lime"
                     opacity="1"
-                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true; delay: 6000 ">
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 6000 ">
                 </a-sphere>
                 <a-sphere
                     position="0 5 0"
                     radius=".08"
                     color="lime"
                     opacity="1"
-                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true; delay: 7000 ">
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 7000 ">
                 </a-sphere>
                 <a-sphere
                     position="0 5 0"
                     radius=".08"
                     color="lime"
                     opacity="1"
-                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true; delay: 8000 ">
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 8000 ">
                 </a-sphere>
                 <a-sphere
                     position="0 5 0"
                     radius=".08"
                     color="lime"
                     opacity="1"
-                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true; delay: 9000 ">
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 9000 ">
                 </a-sphere>
                 <a-sphere
                     position="0 5 0"
                     radius=".08"
                     color="lime"
                     opacity="1"
-                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true; delay: 10000 ">
+                    animation="property:position; to: 0 -25 0; dur: 10000; loop: true;delay: 10000 ">
                 </a-sphere>
 
                 <a-entity position="-9 1.25 4.5" rotation="-90 -57 0" animation="property: position; to: -7.25 1.25 3.5; dir: alternate; loop: true; dur: 800">
