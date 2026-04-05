@@ -46,7 +46,7 @@
     const dx = this.currHandPos.x - this.prevHandPos.x;
     const dy = this.currHandPos.y - this.prevHandPos.y;
     // Horizontal hand movement → rotate on Y axis
-    this.el.object3D.rotation.y += dx * this.data.rotateSensitivity;
+    this.el.object3D.rotation.y -= dx * this.data.rotateSensitivity;
     // Vertical hand movement → move up/down
     this.el.object3D.position.y += dy * this.data.moveSensitivity;
     this.prevHandPos.copy(this.currHandPos);
