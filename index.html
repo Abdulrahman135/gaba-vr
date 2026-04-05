@@ -15,6 +15,10 @@
     this.activeHand = null;
     this.prevHandPos = new THREE.Vector3();
     this.currHandPos = new THREE.Vector3();
+    this._delta = new THREE.Vector3();
+    this._camForward = new THREE.Vector3();
+    this._rightVec = new THREE.Vector3();
+    this._up = new THREE.Vector3(0, 1, 0);
     this.onTriggerDown = () => {
       if (this.activeHand) {
         this.dragging = true;
@@ -32,7 +36,6 @@
       hand.addEventListener('triggerup', this.onTriggerUp);
     });
     this.el.addEventListener('mouseleave', () => {
-      // Keep listening if still dragging, clean up only when not holding
       if (!this.dragging && this.activeHand) {
         this.activeHand.removeEventListener('triggerdown', this.onTriggerDown);
         this.activeHand.removeEventListener('triggerup', this.onTriggerUp);
@@ -43,11 +46,17 @@
   tick: function () {
     if (!this.dragging || !this.activeHand) return;
     this.activeHand.object3D.getWorldPosition(this.currHandPos);
-    const dx = this.currHandPos.x - this.prevHandPos.x;
-    const dy = this.currHandPos.y - this.prevHandPos.y;
-    // Horizontal hand movement → rotate on Y axis
-    this.el.object3D.rotation.y -= dx * this.data.rotateSensitivity;
-    // Vertical hand movement → move up/down
+    this._delta.subVectors(this.currHandPos, this.prevHandPos);
+    // Get the camera's right vector so horizontal = relative to where you're looking
+    const cam = this.el.sceneEl.camera;
+    cam.getWorldDirection(this._camForward);
+    this._camForward.y = 0;
+    this._camForward.normalize();
+    this._rightVec.crossVectors(this._camForward, this._up).normalize();
+    // Project hand movement onto camera-relative right axis
+    const dx = this._delta.dot(this._rightVec);
+    const dy = this._delta.y;
+    this.el.object3D.rotation.y += dx * this.data.rotateSensitivity;
     this.el.object3D.position.y += dy * this.data.moveSensitivity;
     this.prevHandPos.copy(this.currHandPos);
   }
