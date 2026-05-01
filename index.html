@@ -251,11 +251,12 @@ AFRAME.registerComponent('falling-loop', {
                 <img id="info5" src="3dassets/info5.jpeg">
                 <img id="info6" src="3dassets/info6.jpeg">
                 <img id="info7" src="3dassets/info7.jpeg">
+                <img id="controls" src="3dassets\controls.jpg">
                 
             </a-assets>
             
             <!-- Camera -->
-            <a-entity id="rig" thumbstick-locomotion="speed: 0.05; fastSpeed: 0.2" position="0 0 0" rotation="0 180 0">
+            <a-entity id="rig" thumbstick-locomotion="speed: 0.05; fastSpeed: 0.2" position="0 0 -10" rotation="0 180 0">
                 <a-entity
                     camera
                     position="0 2 0"
@@ -1190,6 +1191,18 @@ AFRAME.registerComponent('falling-loop', {
                     position="-0.01 5.182 0.099" 
                     width="7.45" 
                     height="5">
+                </a-image>
+            </a-entity>
+             <a-entity 
+                gltf-model="#display"
+                position="0 3 0"
+                scale="1 .8 1"
+                rotation="20 180 0">
+                <a-image 
+                    src="#controls" 
+                    position="-0.01 5.16 0.099" 
+                    width="7.4" 
+                    height="5.5">
                 </a-image>
             </a-entity>
             
